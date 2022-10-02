@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import axois from 'axois';
 import { Card, CardGroup, Typography, Slider } from '@douyinfe/semi-ui';
 
 class cardGroup extends React.Component {
     constructor(props) {
         super(props);
+        var url='/getdata';
+        axois.get(url).then(
+            function (res) {
+                console.log(res.data);
+                
+            });
         this.state = {
             dataList: [
                 {
