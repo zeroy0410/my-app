@@ -1,50 +1,59 @@
-import React, { useState } from 'react';
-import axois from 'axois';
+import axios from 'axios';
+import React from 'react';
 import { Card, CardGroup, Typography, Slider } from '@douyinfe/semi-ui';
 
 class cardGroup extends React.Component {
     constructor(props) {
         super(props);
-        var url='/getdata';
-        axois.get(url).then(
-            function (res) {
-                console.log(res.data);
-                
-            });
         this.state = {
-            dataList: [
-                {
-                    title: "后端开发实习生",
-                    city: "北京",
-                    isShixi: true,
-                    tags:["dev","houduan"],
-                    label: "1、参与电商基础数据建设，参与电商动态定价系统设计和搭建；\
-                2、参与电商分布式数据接入调度系统搭建及优化，打造高性能、高可用的数据接入中台；",
-                },
-                {
-                    title: "后端开发工程师-互娱研发",
-                    city: "深圳",
-                    isShixi: false,
-                    tags:["dev","houduan"],
-                    label: "1、参与系统架构设计、优化，提升系统性能和开发效率，保证高并发高可靠；\
-                2、通过不断的技术研究和创新，推动业务的快速发展和高效迭代；",
-                }]
+            dataList: [],
         }
+        this.fetchData();
+    }
+    fetchData(){
+        var url='http://localhost:8080/getdata';
+        axios.get(url,{
+            headers:{
+                "Access-Control-Allow-Origin":"http://localhost:8080/getdata",
+                // "Access-Control-Allow-Methods":"POST, GET, OPTIONS, PUT, DELETE, UPDATE",
+                "Access-Control-Allow-Headers":"Access-Control-Allow-Headers, Access-Control-Allow-Origin, Origin, X-Requested-With, X-Extra-Header, Content-Type, Accept, Authorization",
+                // "Access-Control-Expose-Headers":"Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type",
+                // // "Access-Control-Allow-Credentials":"true",
+                // "content-type":"application/json" // 可选
+            }
+        }).then(
+            res => {
+                const data=JSON.parse(res.data);
+                console.log(data);
+                this.setState({dataList:data});
+            });
+        
     }
     checkIsSelected(item){
         // console.log(this.props.selected.indexOf(item.tags));
-        // console.log(this.props.selected);
-        if(this.props.selected.length===0)return true;
-        for (let index = 0; index < item.tags.length; index++) {
-            const element = item.tags[index];
+        // console.log(this.props.city);
+        // console.log(item["isShixi"],this.props.isShixi);
+        // console.log("haha");
+        if(item["isShixi"]!=this.props.isShixi)return false;
+        let isCity=false;
+        let isTags=false;
+        if(this.props.selected.length===0)isTags=true;
+        if(this.props.city.length===0)isCity=true;
+        if(this.props.city.indexOf(item["city"])!=-1){
+            isCity=true;
+        }
+        for (let index = 0; index < item["tags"].length; index++) {
+            const element = item["tags"][index];
             if(this.props.selected.indexOf(element)!=-1){
-                return true;
+                isTags=true;
+                break;
             }
         }
-        return false;
+        // console.log(isCity);
+        return isCity&&isTags;
     }
     render() {
-        const { Text } = Typography;
+        const { Text,Paragraph} = Typography;
         const spacing = 12;
         const { dataList } = this.state;
         return (
@@ -55,7 +64,8 @@ class cardGroup extends React.Component {
                             <Card
                                 key={idx}
                                 shadows='hover'
-                                title={item.title}
+                                loading={false}
+                                title={item["title"]}
                                 headerLine={false}
                                 style={{ width: 260 }}
                                 headerExtraContent={
@@ -64,7 +74,7 @@ class cardGroup extends React.Component {
                                     </Text>
                                 }
                             >
-                                <Text>{item.label}</Text>
+                                <Paragraph>{item["text"]}</Paragraph>
                             </Card>
                         ):null)
                     }
