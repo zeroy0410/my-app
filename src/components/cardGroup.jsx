@@ -52,6 +52,10 @@ class cardGroup extends React.Component {
         // console.log(isCity);
         return isCity&&isTags;
     }
+    isClick(href){
+        // console.log(href);
+        window.open(href);
+    }
     render() {
         const { Text,Paragraph} = Typography;
         const spacing = 12;
@@ -63,8 +67,8 @@ class cardGroup extends React.Component {
                         dataList.map((item, idx) => this.checkIsSelected(item)?(
                             <Card
                                 key={idx}
-                                shadows='hover'
                                 loading={false}
+                                shadows='hover'
                                 title={item["title"]}
                                 headerLine={false}
                                 style={{ width: 260 }}
@@ -73,6 +77,7 @@ class cardGroup extends React.Component {
                                         More
                                     </Text>
                                 }
+                                onClick={()=>this.isClick(item["href"])}
                             >
                                 <Paragraph>{item["text"]}</Paragraph>
                             </Card>

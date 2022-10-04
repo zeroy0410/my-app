@@ -19,7 +19,7 @@ type Jobs struct {
 	IsShixi bool     `json:"isShixi" bson:"isShixi"`
 	Tags    []string `json:"tags" bson:"tags"`
 	Text    string   `json:"text" bson:"text"`
-	href    string   `json:"href" bson:"href"`
+	Href    string   `json:"href" bson:"href"`
 }
 
 var client *mongo.Client

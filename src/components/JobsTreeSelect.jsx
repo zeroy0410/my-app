@@ -40,6 +40,33 @@ class JobsTreeSelect extends React.Component {
             },
           ],
         },
+        {
+          label: '运营',
+          value: 'yunying',
+          key: '1',
+          children: [
+            {
+              label: '产品运营',
+              value: 'chanpin',
+              key: '1-0',
+            },
+            {
+              label: '商业运营',
+              value: 'shangye',
+              key: '1-1',
+            },
+            {
+              label: '用户运营',
+              value: 'yonghu',
+              key: '1-2',
+            },
+            {
+              label: '内容运营',
+              value: 'neirong',
+              key: '1-3',
+            },
+          ],
+        },
       ];
       return (
         <TreeSelect
